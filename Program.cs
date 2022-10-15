@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Security.AccessControl;
-using ATM.Deposit;
-using static ATM.Deposit.Deposit;
 
 namespace BankAccount;
 public class CardHolder
@@ -75,17 +73,25 @@ public class CardHolder
               Console.WriteLine("4. Exit");
        }
 
-       public static void Main(string[] args)
+       //passing the cardholder as param here is useless, as it is within scope - leave it for practice
+       void deposit(CardHolder currUser)
        {
-
+              Console.WriteLine("How much do you want to deposit?");
               try
               {
-                     printOptions();
-                     Deposit.deposit(1000);
+                     double depAmount = Double.Parse(Console.ReadLine());
+                     currUser.setBalance(balance + depAmount);
+                     Console.WriteLine("Transaction complete. New Balance: " + currUser.getBalance());
               }
-              catch (Exception)
+              catch (Exception ex)
               {
-                     Console.Write("An error occurred...");
+                     Console.Write($"An error occurred -> {ex.Message}");
               }
+       }
+
+       public static void Main(string[] args)
+       {
+              printOptions();
+              // Deposit.deposit(1000); 
        }
 }
