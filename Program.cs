@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Security.AccessControl;
+using ATM.Deposit;
+using static ATM.Deposit.Deposit;
 
+namespace BankAccount;
 public class CardHolder
 {
        string cardNum;
@@ -60,5 +64,28 @@ public class CardHolder
        public void setBalance(double newBalance)
        {
               balance = newBalance;
+       }
+
+       static void printOptions()
+       {
+              Console.WriteLine("Choose an action");
+              Console.WriteLine("1. Deposit");
+              Console.WriteLine("2. Withdraw");
+              Console.WriteLine("3. Show Balance");
+              Console.WriteLine("4. Exit");
+       }
+
+       public static void Main(string[] args)
+       {
+
+              try
+              {
+                     printOptions();
+                     Deposit.deposit(1000);
+              }
+              catch (Exception)
+              {
+                     Console.Write("An error occurred...");
+              }
        }
 }
