@@ -68,7 +68,7 @@ public class CardHolder
        }
 
        //passing the cardholder as param here is useless, as it is within scope - leave it for practice
-       void deposit(CardHolder currUser)
+       static void deposit(CardHolder currUser)
        {
               Console.WriteLine("How much do you want to deposit?");
               try
@@ -83,9 +83,9 @@ public class CardHolder
               }
        }
 
-       void withdraw(CardHolder currUser)
+       static void withdraw(CardHolder currUser)
        {
-              Console.WriteLine("How much do you want to deposit?");
+              Console.WriteLine("How much do you want to withdraw?");
               try
               {
                      double withdrawAmount = Double.Parse(Console.ReadLine());
@@ -106,12 +106,12 @@ public class CardHolder
               }
        }
 
-       void getCurrentBalance(CardHolder currUser)
+       static void showBalance(CardHolder currUser)
        {
               Console.WriteLine("Your current balance is: " + currUser.getBalance());
        }
 
-       static bool checkPin(List<CardHolder> cardHolders1)
+       static CardHolder findAccount(List<CardHolder> cardHolders1)
        {
               bool outcome = false;
               Console.Write("Please enter your PIN: ");
@@ -121,14 +121,14 @@ public class CardHolder
               if (!int.TryParse(customerPin, out pin))
               {
                      Console.WriteLine("Invalid input");
-                     return false;
+                     // return false;
               }
               CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.pin == pin);
               Console.WriteLine(currentCustomer);
-              if (currentCustomer != null) outcome = true;
+              // if (currentCustomer != null) outcome = true;
 
 
-              return outcome;
+              return currentCustomer;
 
        }
 
@@ -136,6 +136,7 @@ public class CardHolder
        public static void Main(string[] args)
        {
               int choice;
+              CardHolder currentAccount;
               bool pinCorrect = false;
               do
               {
@@ -149,9 +150,13 @@ public class CardHolder
                      cardHolders.Add(new CardHolder(5674, "Hughie", "Campbell", 170.80));
                      cardHolders.Add(new CardHolder(5675, "Mother's", "Milk", 15000.00));
                      //ask for pin until a correct one is given
-                     if (pinCorrect == false) pinCorrect = checkPin(cardHolders);
                      Console.Write("Choose an action: ");
                      choice = Int32.Parse(Console.ReadLine());
+                     currentAccount = findAccount(cardHolders);
+                     if (pinCorrect == false && choice != 4) currentAccount = findAccount(cardHolders);
+                     if (choice == 1) deposit(currentAccount);
+                     if (choice == 2) withdraw(currentAccount);
+                     if (choice == 3) showBalance(currentAccount);
 
                      // checkPin("5677", cardHolders);}
 
