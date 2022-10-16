@@ -1,27 +1,23 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.AccessControl;
 
 namespace BankAccount;
 public class CardHolder
 {
-       string cardNum;
        int pin;
        string firstName;
        string lastName;
        double balance;
 
-       public CardHolder(string cardNum, int pin, string firstName, string lastName, double balance)
+       public CardHolder(int pin, string firstName, string lastName, double balance)
        {
-              this.cardNum = cardNum;
               this.pin = pin;
               this.firstName = firstName;
               this.lastName = lastName;
               this.balance = balance;
-       }
-
-       public string getNum()
-       {
-              return cardNum;
        }
 
        public string getFirstName()
@@ -37,11 +33,6 @@ public class CardHolder
        public double getBalance()
        {
               return balance;
-       }
-
-       public void setNum(string num)
-       {
-              cardNum = num;
        }
 
        public void setPin(int newPin)
@@ -72,12 +63,8 @@ public class CardHolder
               Console.WriteLine("3. Show Balance");
               Console.WriteLine("4. Exit");
               // char choice = new char();
-              int choice = Int32.Parse(Console.ReadLine());
+
               // byte[] choice = Byte.Parse();
-              if (choice != 4)
-              {
-                     Console.WriteLine("hey");
-              }
        }
 
        //passing the cardholder as param here is useless, as it is within scope - leave it for practice
@@ -124,9 +111,46 @@ public class CardHolder
               Console.WriteLine("Your current balance is: " + currUser.getBalance());
        }
 
+       static bool checkPin(string customerPin, List<CardHolder> cardHolders1)
+       {
+              customerPin = Console.ReadLine();
+              //could have just made pin "string" from the start, just testing stuff
+              int pin;
+              if (!int.TryParse(customerPin, out pin))
+              {
+                     Console.WriteLine("Invalid input");
+              }
+              else
+              {
+                     pin = int.Parse(customerPin);
+                     CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.pin == pin);
+                     Console.WriteLine("success");
+              };
+
+              return true; //change this
+
+       }
+
+
        public static void Main(string[] args)
        {
-              printOptions();
-              // Deposit.deposit(1000); 
+              int choice;
+              do
+              {
+                     printOptions();
+                     // Deposit.deposit(1000); 
+                     List<CardHolder> cardHolders = new List<CardHolder>();
+                     // CardHolder testholder = new CardHolder("12193841984", 5678, "Stan", "Edgar", 150.22);
+                     cardHolders.Add(new CardHolder(5671, "Stan", "Edgar", 154240.22));
+                     cardHolders.Add(new CardHolder(5672, "John", "Homelander", 152279.34));
+                     cardHolders.Add(new CardHolder(5673, "Billy", "Butcher", 1500.72));
+                     cardHolders.Add(new CardHolder(5674, "Hughie", "Campbell", 170.80));
+                     cardHolders.Add(new CardHolder(5675, "Mother's", "Milk", 15000.00));
+                     choice = Int32.Parse(Console.ReadLine());
+
+                     // checkPin("5677", cardHolders);}
+
+
+              } while (choice != 4);
        }
 }
