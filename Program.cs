@@ -111,23 +111,24 @@ public class CardHolder
               Console.WriteLine("Your current balance is: " + currUser.getBalance());
        }
 
-       static bool checkPin(string customerPin, List<CardHolder> cardHolders1)
+       static bool checkPin(List<CardHolder> cardHolders1)
        {
-              customerPin = Console.ReadLine();
+              bool outcome = false;
+              Console.Write("Please enter your PIN: ");
+              string customerPin = Console.ReadLine();
               //could have just made pin "string" from the start, just testing stuff
-              int pin;
+              int pin = int.Parse(customerPin);
               if (!int.TryParse(customerPin, out pin))
               {
                      Console.WriteLine("Invalid input");
+                     return false;
               }
-              else
-              {
-                     pin = int.Parse(customerPin);
-                     CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.pin == pin);
-                     Console.WriteLine("success");
-              };
+              CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.pin == pin);
+              Console.WriteLine(currentCustomer);
+              if (currentCustomer != null) outcome = true;
 
-              return true; //change this
+
+              return outcome;
 
        }
 
@@ -135,6 +136,7 @@ public class CardHolder
        public static void Main(string[] args)
        {
               int choice;
+              bool pinCorrect = false;
               do
               {
                      printOptions();
@@ -146,11 +148,15 @@ public class CardHolder
                      cardHolders.Add(new CardHolder(5673, "Billy", "Butcher", 1500.72));
                      cardHolders.Add(new CardHolder(5674, "Hughie", "Campbell", 170.80));
                      cardHolders.Add(new CardHolder(5675, "Mother's", "Milk", 15000.00));
+                     //ask for pin until a correct one is given
+                     if (pinCorrect == false) pinCorrect = checkPin(cardHolders);
+                     Console.Write("Choose an action: ");
                      choice = Int32.Parse(Console.ReadLine());
 
                      // checkPin("5677", cardHolders);}
 
 
-              } while (choice != 4);
+              } while (choice > 0 && choice < 4);
+              Console.WriteLine("Goodbye");
        }
 }
