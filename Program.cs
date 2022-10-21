@@ -15,6 +15,7 @@ public class CardHolder
        public string FirstName { get; set; }
        public string LastName { get; set; }
        public double Balance { get; set; }
+       public bool loggedIn { get; set; }
 
        public CardHolder(int pinNum, string fName, string lName, double currBalance)
        {
@@ -64,6 +65,7 @@ public class CardHolder
                      if (withdrawAmount < currUser.Balance)
                      {
                             currUser.Balance -= withdrawAmount;
+
                      }
                      else
                      {
@@ -71,11 +73,13 @@ public class CardHolder
                      }
 
                      Console.WriteLine("Transaction complete. New Balance: " + currUser.Balance);
+
               }
               catch (Exception ex)
               {
                      Console.Write($"An error occurred -> {ex.Message}");
               }
+
        }
 
        static void showBalance(CardHolder currUser)
@@ -85,7 +89,7 @@ public class CardHolder
 
        static CardHolder findAccount(List<CardHolder> cardHolders1)
        {
-              bool outcome = false;
+
               Console.Write("Please enter your PIN: ");
               string customerPin = Console.ReadLine();
               //could have just made pin "string" from the start, just testing stuff
@@ -96,6 +100,7 @@ public class CardHolder
                      // return false;
               }
               CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.Pin == pin);
+              if (currentCustomer != null) { Console.WriteLine("Pin correct!"); currentCustomer.loggedIn = true; } else { Console.WriteLine("Incorrect pin"); }
               Console.WriteLine(currentCustomer);
               // if (currentCustomer != null) outcome = true;
 
@@ -110,31 +115,34 @@ public class CardHolder
               int choice;
               CardHolder currentAccount;
               bool pinCorrect = false;
+
+              printOptions();
+              // Deposit.deposit(1000); 
+              List<CardHolder> cardHolders = new List<CardHolder>();
+              // CardHolder testholder = new CardHolder("12193841984", 5678, "Stan", "Edgar", 150.22);
+              cardHolders.Add(new CardHolder(5671, "Stan", "Edgar", 154240.22));
+              cardHolders.Add(new CardHolder(5672, "John", "Homelander", 152279.34));
+              cardHolders.Add(new CardHolder(5673, "Billy", "Butcher", 1500.72));
+              cardHolders.Add(new CardHolder(5674, "Hughie", "Campbell", 170.80));
+              cardHolders.Add(new CardHolder(5675, "Mother's", "Milk", 15000.00));
+              //ask for pin until a correct one is given
               do
               {
-                     printOptions();
-                     // Deposit.deposit(1000); 
-                     List<CardHolder> cardHolders = new List<CardHolder>();
-                     // CardHolder testholder = new CardHolder("12193841984", 5678, "Stan", "Edgar", 150.22);
-                     cardHolders.Add(new CardHolder(5671, "Stan", "Edgar", 154240.22));
-                     cardHolders.Add(new CardHolder(5672, "John", "Homelander", 152279.34));
-                     cardHolders.Add(new CardHolder(5673, "Billy", "Butcher", 1500.72));
-                     cardHolders.Add(new CardHolder(5674, "Hughie", "Campbell", 170.80));
-                     cardHolders.Add(new CardHolder(5675, "Mother's", "Milk", 15000.00));
-                     //ask for pin until a correct one is given
                      Console.Write("Choose an action: ");
                      choice = Int32.Parse(Console.ReadLine());
+                     if (choice == 4) break;
                      currentAccount = findAccount(cardHolders);
-                     if (pinCorrect == false && choice != 4) currentAccount = findAccount(cardHolders);
+                     if (currentAccount.loggedIn == false && choice != 4) currentAccount = findAccount(cardHolders);
                      if (choice == 1) deposit(currentAccount);
                      if (choice == 2) withdraw(currentAccount);
                      if (choice == 3) showBalance(currentAccount);
+
 
                      // checkPin("5677", cardHolders);}
 
 
               } while (choice > 0 && choice < 4);
-              Console.WriteLine("Goodbye");
+              Console.WriteLine("Goodbye!");
 
 
        }
