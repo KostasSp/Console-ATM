@@ -3,57 +3,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.AccessControl;
+using System.Collections.Generic;
+using System.Dynamic;
 
+//https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/tutorials/oop
+//ideas for inherited classes, credit card, savings account card etc
 namespace BankAccount;
 public class CardHolder
 {
-       int pin;
-       string firstName;
-       string lastName;
-       double balance;
+       public int Pin { get; set; }
+       public string FirstName { get; set; }
+       public string LastName { get; set; }
+       public double Balance { get; set; }
 
-       public CardHolder(int pin, string firstName, string lastName, double balance)
+       public CardHolder(int pinNum, string fName, string lName, double currBalance)
        {
-              this.pin = pin;
-              this.firstName = firstName;
-              this.lastName = lastName;
-              this.balance = balance;
+              //ideas for inherited classes, credit card, savings account card etc
+              this.Pin = pinNum;
+              this.FirstName = fName;
+              this.LastName = lName;
+              this.Balance = currBalance;
        }
 
-       public string getFirstName()
-       {
-              return firstName;
-       }
-
-       public string getLastName()
-       {
-              return lastName;
-       }
-
-       public double getBalance()
-       {
-              return balance;
-       }
-
-       public void setPin(int newPin)
-       {
-              pin = newPin;
-       }
-
-       public void setFirstName(string fname)
-       {
-              firstName = fname;
-       }
-
-       public void setLastName(string lname)
-       {
-              lastName = lname;
-       }
-
-       public void setBalance(double newBalance)
-       {
-              balance = newBalance;
-       }
 
        static void printOptions()
        {
@@ -62,20 +33,20 @@ public class CardHolder
               Console.WriteLine("2. Withdraw");
               Console.WriteLine("3. Show Balance");
               Console.WriteLine("4. Exit");
-              // char choice = new char();
-
-              // byte[] choice = Byte.Parse();
        }
 
        //passing the cardholder as param here is useless, as it is within scope - leave it for practice
        static void deposit(CardHolder currUser)
        {
               Console.WriteLine("How much do you want to deposit?");
+              // Console.WriteLine(currUser.firstName);
+              // currUser.firstName = "noob";
+              // Console.WriteLine(currUser.firstName);
               try
               {
                      double depAmount = Double.Parse(Console.ReadLine());
-                     currUser.setBalance(currUser.getBalance() + depAmount);
-                     Console.WriteLine("Transaction complete. New Balance: " + currUser.getBalance());
+                     currUser.Balance += depAmount;
+                     Console.WriteLine("Transaction complete. New Balance: " + currUser.Balance);
               }
               catch (Exception ex)
               {
@@ -88,17 +59,18 @@ public class CardHolder
               Console.WriteLine("How much do you want to withdraw?");
               try
               {
+                     //need to add ref or out or smth to this, doesnt update the actual value between actions
                      double withdrawAmount = Double.Parse(Console.ReadLine());
-                     if (withdrawAmount < currUser.getBalance())
+                     if (withdrawAmount < currUser.Balance)
                      {
-                            currUser.setBalance(currUser.getBalance() - withdrawAmount);
+                            currUser.Balance -= withdrawAmount;
                      }
                      else
                      {
                             Console.WriteLine("You cannot withdraw more than your current balance");
                      }
 
-                     Console.WriteLine("Transaction complete. New Balance: " + currUser.getBalance());
+                     Console.WriteLine("Transaction complete. New Balance: " + currUser.Balance);
               }
               catch (Exception ex)
               {
@@ -108,7 +80,7 @@ public class CardHolder
 
        static void showBalance(CardHolder currUser)
        {
-              Console.WriteLine("Your current balance is: " + currUser.getBalance());
+              Console.WriteLine("Your current balance is: " + currUser.Balance);
        }
 
        static CardHolder findAccount(List<CardHolder> cardHolders1)
@@ -123,7 +95,7 @@ public class CardHolder
                      Console.WriteLine("Invalid input");
                      // return false;
               }
-              CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.pin == pin);
+              CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.Pin == pin);
               Console.WriteLine(currentCustomer);
               // if (currentCustomer != null) outcome = true;
 
@@ -163,5 +135,7 @@ public class CardHolder
 
               } while (choice > 0 && choice < 4);
               Console.WriteLine("Goodbye");
+
+
        }
 }

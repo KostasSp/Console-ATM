@@ -127,6 +127,8 @@ artifacts/
 # Chutzpah Test files
 _Chutzpah*
 
+CodeWars/
+
 # Visual C++ cache files
 ipch/
 *.aps
