@@ -69,7 +69,10 @@ public class CardHolder
                      }
                      else
                      {
-                            Console.WriteLine("You cannot withdraw more than your current balance");
+                            /* this exception does allow the user to reach "transation complete" message, if balance < withdraw 
+                            amount. So this is better than simply writing a message to the console */
+                            throw new ArgumentException(
+                            "You cannot withdraw more than your current balance!" + "\n");
                      }
 
                      Console.WriteLine("Transaction complete. New Balance: " + currUser.Balance);
@@ -146,9 +149,9 @@ public class CardHolder
                      {
                             Console.WriteLine("Wrong input: " + ex.Message);
                      }
+                     if (choice < 0 || choice > 4) Console.WriteLine("Invalid choice");
                      if (choice == 4) break;
-                     if (currentAccount == null) currentAccount = findAccount(cardHolders);
-                     // if (currentAccount.loggedIn == false && choice != 4) currentAccount = findAccount(cardHolders);
+                     if (currentAccount == null && (choice > 0 && choice < 4)) currentAccount = findAccount(cardHolders);
                      if (choice == 1) deposit(currentAccount);
                      if (choice == 2) withdraw(currentAccount);
                      if (choice == 3) showBalance(currentAccount);
@@ -157,7 +160,7 @@ public class CardHolder
                      // checkPin("5677", cardHolders);}
 
 
-              } while (choice > 0 && choice < 4);
+              } while (true);
               Console.WriteLine("Goodbye!");
 
 
