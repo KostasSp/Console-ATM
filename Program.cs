@@ -8,7 +8,7 @@ using System.Dynamic;
 
 //https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/tutorials/oop
 //ideas for inherited classes, credit card, savings account card etc
-namespace BankAccount;
+namespace ATM;
 public class CardHolder
 {
        public int Pin { get; set; }
@@ -89,9 +89,17 @@ public class CardHolder
 
        static CardHolder findAccount(List<CardHolder> cardHolders1)
        {
-
+              string customerPin = null;
               Console.Write("Please enter your PIN: ");
-              string customerPin = Console.ReadLine();
+              try
+              {
+                     customerPin = Console.ReadLine();
+              }
+              catch (Exception ex)
+              {
+                     Console.WriteLine("Please enter a valid pin");
+                     Console.WriteLine(ex.Message);
+              }
               //could have just made pin "string" from the start, just testing stuff
               int pin = int.Parse(customerPin);
               if (!int.TryParse(customerPin, out pin))
@@ -100,6 +108,7 @@ public class CardHolder
                      // return false;
               }
               CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.Pin == pin);
+
               if (currentCustomer != null) { Console.WriteLine("Pin correct!"); currentCustomer.loggedIn = true; } else { Console.WriteLine("Incorrect pin"); }
               Console.WriteLine(currentCustomer);
               // if (currentCustomer != null) outcome = true;
@@ -112,10 +121,10 @@ public class CardHolder
 
        public static void Main(string[] args)
        {
-              int choice;
-              CardHolder currentAccount;
-              bool pinCorrect = false;
 
+              CardHolder currentAccount = null;
+              bool pinCorrect = false;
+              int choice = 0;
               printOptions();
               // Deposit.deposit(1000); 
               List<CardHolder> cardHolders = new List<CardHolder>();
@@ -129,10 +138,17 @@ public class CardHolder
               do
               {
                      Console.Write("Choose an action: ");
-                     choice = Int32.Parse(Console.ReadLine());
+                     try
+                     {
+                            choice = Int32.Parse(Console.ReadLine());
+                     }
+                     catch (Exception ex)
+                     {
+                            Console.WriteLine("Wrong input: " + ex.Message);
+                     }
                      if (choice == 4) break;
-                     currentAccount = findAccount(cardHolders);
-                     if (currentAccount.loggedIn == false && choice != 4) currentAccount = findAccount(cardHolders);
+                     if (currentAccount == null) currentAccount = findAccount(cardHolders);
+                     // if (currentAccount.loggedIn == false && choice != 4) currentAccount = findAccount(cardHolders);
                      if (choice == 1) deposit(currentAccount);
                      if (choice == 2) withdraw(currentAccount);
                      if (choice == 3) showBalance(currentAccount);
