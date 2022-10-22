@@ -12,8 +12,8 @@ namespace ATM;
 public class CardHolder
 {
        public int Pin { get; set; }
-       public string FirstName { get; set; }
-       public string LastName { get; set; }
+       public string FirstName { get; }
+       public string LastName { get; }
        public double Balance { get; set; }
        public bool loggedIn { get; set; }
 
@@ -69,8 +69,8 @@ public class CardHolder
                      }
                      else
                      {
-                            /* this exception does allow the user to reach "transation complete" message, if balance < withdraw 
-                            amount. So this is better than simply writing a message to the console */
+                            /* this exception does allow the user to reach "transation complete" message, if 
+                            balance < withdraw amount. So this is better than simply writing a console message */
                             throw new ArgumentException(
                             "You cannot withdraw more than your current balance!" + "\n");
                      }
@@ -105,20 +105,13 @@ public class CardHolder
               }
               //could have just made pin "string" from the start, just testing stuff
               int pin = int.Parse(customerPin);
-              if (!int.TryParse(customerPin, out pin))
-              {
-                     Console.WriteLine("Invalid input");
-                     // return false;
-              }
+              if (!int.TryParse(customerPin, out pin)) Console.WriteLine("Invalid input");
+
               CardHolder currentCustomer = cardHolders1.FirstOrDefault(a => a.Pin == pin);
 
               if (currentCustomer != null) { Console.WriteLine("Pin correct!"); currentCustomer.loggedIn = true; } else { Console.WriteLine("Incorrect pin"); }
               Console.WriteLine(currentCustomer);
-              // if (currentCustomer != null) outcome = true;
-
-
               return currentCustomer;
-
        }
 
 
@@ -126,18 +119,14 @@ public class CardHolder
        {
 
               CardHolder currentAccount = null;
-              bool pinCorrect = false;
               int choice = 0;
               printOptions();
-              // Deposit.deposit(1000); 
               List<CardHolder> cardHolders = new List<CardHolder>();
-              // CardHolder testholder = new CardHolder("12193841984", 5678, "Stan", "Edgar", 150.22);
               cardHolders.Add(new CardHolder(5671, "Stan", "Edgar", 154240.22));
               cardHolders.Add(new CardHolder(5672, "John", "Homelander", 152279.34));
               cardHolders.Add(new CardHolder(5673, "Billy", "Butcher", 1500.72));
               cardHolders.Add(new CardHolder(5674, "Hughie", "Campbell", 170.80));
               cardHolders.Add(new CardHolder(5675, "Mother's", "Milk", 15000.00));
-              //ask for pin until a correct one is given
               do
               {
                      Console.Write("Choose an action: ");
@@ -155,14 +144,7 @@ public class CardHolder
                      if (choice == 1) deposit(currentAccount);
                      if (choice == 2) withdraw(currentAccount);
                      if (choice == 3) showBalance(currentAccount);
-
-
-                     // checkPin("5677", cardHolders);}
-
-
               } while (true);
               Console.WriteLine("Goodbye!");
-
-
        }
 }
