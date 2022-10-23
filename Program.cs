@@ -6,8 +6,6 @@ using System.Security.AccessControl;
 using System.Collections.Generic;
 using System.Dynamic;
 
-//https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/tutorials/oop
-//ideas for inherited classes, credit card, savings account card etc
 namespace ATM;
 public class CardHolder
 {
@@ -19,7 +17,6 @@ public class CardHolder
 
        public CardHolder(int pinNum, string fName, string lName, double currBalance)
        {
-              //ideas for inherited classes, credit card, savings account card etc
               this.Pin = pinNum;
               this.FirstName = fName;
               this.LastName = lName;
@@ -36,13 +33,9 @@ public class CardHolder
               Console.WriteLine("4. Exit");
        }
 
-       //passing the cardholder as param here is useless, as it is within scope - leave it for practice
        static void deposit(CardHolder currUser)
        {
               Console.WriteLine("How much do you want to deposit?");
-              // Console.WriteLine(currUser.firstName);
-              // currUser.firstName = "noob";
-              // Console.WriteLine(currUser.firstName);
               try
               {
                      double depAmount = Double.Parse(Console.ReadLine());
@@ -60,7 +53,6 @@ public class CardHolder
               Console.WriteLine("How much do you want to withdraw?");
               try
               {
-                     //need to add ref or out or smth to this, doesnt update the actual value between actions
                      double withdrawAmount = Double.Parse(Console.ReadLine());
                      if (withdrawAmount < currUser.Balance)
                      {
